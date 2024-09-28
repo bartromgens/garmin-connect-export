@@ -23,3 +23,7 @@ Example:
 ```bash
 python garmin_export.py --start-date 2022-11-16 --fileout=data.csv --auth-header="Bearer XXX" --cookie-header="GARMIN-SSO=1; GarminNoCache=true; XXXX"
 ```
+
+## Alternatives
+
+- [Garth](https://github.com/matin/garth)
