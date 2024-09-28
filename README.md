@@ -2,6 +2,14 @@
 
 Retrieves rest heart rate and HRV data from Garmin Connect and writes it to a CSV file.
 
+Example output file:
+|date|rest heart rate|HRV|
+|----|---------------|---|
+|2022-11-16|46|30|
+|2022-11-17|44|55|
+|2022-11-18|48|46|
+|2022-11-19|49|37|
+
 ## How to use?
 
 ### Get authentication keys
