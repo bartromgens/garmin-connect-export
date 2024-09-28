@@ -19,20 +19,28 @@ class GarminClient:
             "DI-Backend": "connectapi.garmin.com",
         }
 
+    def _request(self, url):
+        response = requests.get(url, headers=self.headers)
+        if response.status_code == 200:
+            return response.json()
+        elif response.status_code == 401:
+            print("ERROR: Authentication failed")
+            raise RuntimeError("Authentication failed")
+        else:
+            print(f"ERROR: {response.status_code}")
+            raise RuntimeError(f"HTTP Request Failed with {response.status_code}")
+
     def get_rest_heart_rate(self, date_begin: datetime.date, date_end: datetime.date):
         url = self.URL_REST_HEART_RATE.format(begin=date_begin, end=date_end)
-        response = requests.get(url, headers=self.headers)
-        return {
-            date["calendarDate"]: date["values"]["restingHR"]
-            for date in response.json()
-        }
+        response = self._request(url)
+        return {date["calendarDate"]: date["values"]["restingHR"] for date in response}
 
     def get_hrv(self, date_begin: datetime.date, date_end: datetime.date):
         url = self.URL_HRV.format(begin=date_begin, end=date_end)
-        response = requests.get(url, headers=self.headers)
+        response = self._request(url)
         return {
             date["calendarDate"]: date["lastNightAvg"]
-            for date in response.json()["hrvSummaries"]
+            for date in response["hrvSummaries"]
         }
 
 

@@ -14,7 +14,7 @@ Example output file:
 
 ### Get authentication keys
 First get an authentication and cookie header by visiting https://connect.garmin.com/modern/home 
-and copying the `Authorization` and `Cookie` request headers from a request in the browser developer console 'network' tab.
+and copying the `Authorization` and `Cookie` request headers from a `userAuthorization` request in the browser developer console 'Network' tab.
 
 ### Run the script
 See `garmin_export.py --help` for details.
