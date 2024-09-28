@@ -1,6 +1,6 @@
 import argparse
 import csv
-from typing import Dict
+from typing import Any
 from typing import List
 
 import requests
@@ -49,23 +49,25 @@ def main():
     hrv = {}
     while date_begin < date_end:
         date_end_page = date_begin + datetime.timedelta(days=25)
+        print(f"Getting data for {date_begin} : {date_end_page}")
         heart_rates.update(client.get_rest_heart_rate(date_begin, date_end_page))
         hrv.update(client.get_hrv(date_begin, date_end_page))
         date_begin = date_end_page
 
-    print(heart_rates)
-    print(hrv)
+    date_rate_hrv = [
+        [date, heart_rates.get(date, ""), hrv.get(date, "")]
+        for date in sorted(heart_rates.keys())
+    ]
 
-    write_to_csv(heart_rates, ["date", "rest heart rate"], "rest_heart_rate.csv")
-    write_to_csv(hrv, ["date", "HRV"], "hrv.csv")
+    print(date_rate_hrv)
+    write_to_csv(date_rate_hrv, ["date", "rest heart rate", "HRV"], args.fileout)
 
 
-def write_to_csv(data: Dict[str, float], headers: List[str], filename: str) -> None:
+def write_to_csv(rows: List[Any], headers: List[str], filename: str) -> None:
     with open(filename, "w") as csvfile:
         csvwriter = csv.writer(csvfile)
         csvwriter.writerow(headers)
-        for date, value in data.items():
-            csvwriter.writerow([date, value])
+        csvwriter.writerows(rows)
 
 
 def valid_date(s) -> datetime.date:
@@ -78,7 +80,9 @@ def valid_date(s) -> datetime.date:
 
 
 def parse_args():
-    parser = argparse.ArgumentParser(description="Process some input arguments.")
+    parser = argparse.ArgumentParser(
+        description="Retrieve Garmen Connect data and write them to a CSV file."
+    )
     parser.add_argument(
         "--start-date",
         required=True,
@@ -91,10 +95,19 @@ def parse_args():
         help="End date in the format YYYY-MM-DD (e.g., 2024-08-01). Optional.",
     )
     parser.add_argument(
-        "--auth-header", required=True, type=str, help="Authorization header (string)"
+        "--fileout", required=True, type=str, help="File path for the CSV output file"
     )
     parser.add_argument(
-        "--cookie-header", required=True, type=str, help="Cookie header (string)"
+        "--auth-header",
+        required=True,
+        type=str,
+        help="Authorization header taken from the web app.",
+    )
+    parser.add_argument(
+        "--cookie-header",
+        required=True,
+        type=str,
+        help="Cookie header taken from the web app.",
     )
     return parser.parse_args()
 
