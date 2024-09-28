@@ -5,8 +5,8 @@ Retrieves rest heart rate and HRV data from Garmin Connect and writes it to a CS
 ## How to use?
 
 ### Get authentication keys
-You first need to get an authentication and cookie header by visitin https://connect.garmin.com/modern/home in your browser 
-and copying the `Authorization` and `Cookie` request headers from a request in the browser developer console.
+First get an authentication and cookie header by visiting https://connect.garmin.com/modern/home 
+and copying the `Authorization` and `Cookie` request headers from a request in the browser developer console 'network' tab.
 
 ### Run the script
 See `get_stats.py --help` for details.
