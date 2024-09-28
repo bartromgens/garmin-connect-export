@@ -9,9 +9,9 @@ First get an authentication and cookie header by visiting https://connect.garmin
 and copying the `Authorization` and `Cookie` request headers from a request in the browser developer console 'network' tab.
 
 ### Run the script
-See `get_stats.py --help` for details.
+See `garmin_export.py --help` for details.
 
 Example:
 ```bash
-python get_stats.py --start-date 2022-11-16 --fileout=data.csv --auth-header="Bearer XXX" --cookie-header="GARMIN-SSO=1; GarminNoCache=true; XXXX"
+python garmin_export.py --start-date 2022-11-16 --fileout=data.csv --auth-header="Bearer XXX" --cookie-header="GARMIN-SSO=1; GarminNoCache=true; XXXX"
 ```
